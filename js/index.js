@@ -24,18 +24,13 @@ document.addEventListener('DOMContentLoaded', function(event) {
         let newMonsterForm = { name: form.name.value, age: form.age.value, description: form.description.value}
         createMonster(newMonsterForm)
         form.reset()
-
     })
 
     backBtn.addEventListener('click', function(event) {
-
         removeChilds()
         monsterPage --
         loadMonsters()
         checkBtns()
-
-
-
     })
 
     forwardBtn.addEventListener('click', function(event) {
@@ -45,11 +40,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
         checkBtns()
     })
         
-
 })
 
 function createMonsterForm() {
-
     const div = document.querySelector('#create-monster')
     let monsterForm = document.createElement('form')
     monsterForm.id = 'monster-form'
@@ -60,11 +53,9 @@ function createMonsterForm() {
         <input type="submit" value="Submit">
     `
     div.appendChild(monsterForm)
-
 }
 
 function createMonster(monster) {
-
     fetch(monsterUrl, {
         method: 'POST',
         headers: newHeaders,
@@ -72,12 +63,9 @@ function createMonster(monster) {
         
         .then(response => response.json())
         .then(makeMonster => { newMonster(makeMonster)} )
-
 }
 
 function newMonster(monster) {
-
-    
     let newMonster = document.createElement('div')
     newMonster.dataset.id = monster.id
     newMonster.innerHTML = `
@@ -85,11 +73,7 @@ function newMonster(monster) {
         <h4>${monster.age}</h4>
         <p>${monster.description}</p>
     `
-    
-        
-        monsterContainer.appendChild(newMonster)
-
-
+    monsterContainer.appendChild(newMonster)
 }
 
 function loadMonsters() {
