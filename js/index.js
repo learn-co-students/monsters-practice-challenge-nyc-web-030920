@@ -80,7 +80,6 @@ function createMonsterFromForm(input) {
     description: input.description.value 
   }
   
-  console.log(newMonster)
   input.reset()
   return newMonster
 }
@@ -89,7 +88,7 @@ function createMonsterFromForm(input) {
 //
 
 function postMonster(newMonster) {
-  console.log(newMonster)
+
   fetch(baseUrl, {
     // debugger
     //const headers declared globally
