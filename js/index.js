@@ -13,16 +13,17 @@ const backBtn = document.querySelector('#back')
 const forwardBtn = document.querySelector('#forward') 
 
 document.addEventListener('DOMContentLoaded', function(event) {
-
+    
     createMonsterForm()
     loadMonsters()
     checkBtns()
-
+    
+    const form = document.querySelector('#monster-form')
     document.addEventListener('submit', function(event) {
         event.preventDefault()
-        const form = document.querySelector('#monster-form')
-        let newMonsterForm = { name: form.name.value, age: form.age.value, bio: form.description.value}
+        let newMonsterForm = { name: form.name.value, age: form.age.value, description: form.description.value}
         createMonster(newMonsterForm)
+        form.reset()
 
     })
 
@@ -55,7 +56,7 @@ function createMonsterForm() {
     monsterForm.innerHTML = `
         <input type="text" id="name" name="name" placeholder="name...">
         <input type="text" id="age" name="age" placeholder="age..." >
-        <input type="text" id="description" name="bio" placeholder="description...">
+        <input type="text" id="description" name="description" placeholder="description...">
         <input type="submit" value="Submit">
     `
     div.appendChild(monsterForm)
@@ -84,7 +85,10 @@ function newMonster(monster) {
         <h4>${monster.age}</h4>
         <p>${monster.description}</p>
     `
-    monsterContainer.appendChild(newMonster)
+    
+        
+        monsterContainer.appendChild(newMonster)
+
 
 }
 
