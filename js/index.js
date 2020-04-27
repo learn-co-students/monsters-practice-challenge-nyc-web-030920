@@ -1,18 +1,5 @@
-// 
-//button for showing form
-// const addNewMonsterBtn = document.createElement('button')
-// addNewMonsterBtn.textContent = 'Make a New Monster'
-
-// //inserting button before the form div
-// document.body.insertBefore(addNewMonsterBtn, newMonster)
-
-//state variable to toggle form view
-// let showForm = false
 
 const baseUrl = "http://localhost:3000/monsters/"
-const monsterDiv = document.getElementById('monster-container') // listContainer
-const monsterFormDiv = document.getElementById('create-monster') // createMonsterContainer
-
 
 const headers = {
   "Content-Type": "application/json",
@@ -26,31 +13,36 @@ document.addEventListener('DOMContentLoaded', () => {
   getMonsters()
   renderMonsterForm()
   formSubmitSetup()
-    
 })
 
+//
 // fetch and render // could abstract 1 more time
 function getMonsters() {
   fetch(`${baseUrl}/?_limit=5`)
   .then(resp => resp.json())
   .then(monsters => { // would be a function here if abstracted
-    monsters.forEach(monsterObj => {
-      renderMonster(monsterObj)
+    monsters.forEach(monster => {
+      renderMonster(monster)
     });
   })
 }
 
-function renderMonster(monsterObj) {
+//
+
+function renderMonster(monster) {
   let innerDiv = document.createElement('div')
-  innerDiv.dataset.id = monsterObj.id
+  innerDiv.dataset.id = monster.id
 
   innerDiv.innerHTML = `
-    <h1>${monsterObj.name}</h1>
-    <p>${monsterObj.age}</p>
-    <p>${monsterObj.description}</p>
+    <h1>${monster.name}</h1>
+    <p>${monster.age}</p>
+    <p>${monster.description}</p>
   `
-  monsterDiv.append(innerDiv)
+  document.getElementById('monster-container').append(innerDiv)
 }
+
+// 
+//
 
 function renderMonsterForm(){
   document.getElementById('create-monster').innerHTML = `
@@ -66,6 +58,7 @@ function renderMonsterForm(){
 
 }
 
+//
 
 function formSubmitSetup() {
   const monsterForm = document.querySelector('.add-monster-form')
@@ -91,6 +84,9 @@ function createMonsterFromForm(input) {
   input.reset()
   return newMonster
 }
+
+//
+//
 
 function postMonster(newMonster) {
   console.log(newMonster)
