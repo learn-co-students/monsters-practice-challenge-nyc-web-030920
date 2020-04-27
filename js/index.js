@@ -52,6 +52,7 @@ if (goTo >0){
 }
 function renderMonsters(json){
     const monsterDiv= document.getElementById("monster-container")
+    monsterDiv.innerHTML=''
     for(const monster of json){
     let div= document.createElement('div')
     div.innerHTML=`<h1>${monster.name}<h1><h2>Age:${monster.age}</h2><p>Bio: ${monster.description}</p>`
