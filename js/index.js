@@ -1,5 +1,3 @@
-
-
 const newHeaders = {
   "Content-Type": "application/json",
   "Accept": "application/json"
