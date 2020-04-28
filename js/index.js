@@ -32,8 +32,6 @@ backPageButton.textContent = "Go Back";
 Functions will only appear onto the page when called inside the event listener, hence the reason
 why receiveData, renderForm, and submitForm are being called inside. */
 document.addEventListener("DOMContentLoaded", function(){
-    const form = document.querySelector('.add-monster-form')
-
     receiveData(page);
     renderForm();
     submitForm();
