@@ -32,6 +32,8 @@ backPageButton.textContent = "Go Back";
 Functions will only appear onto the page when called inside the event listener, hence the reason
 why receiveData, renderForm, and submitForm are being called inside. */
 document.addEventListener("DOMContentLoaded", function(){
+    const form = document.querySelector('.add-monster-form')
+
     receiveData(page);
     renderForm();
     submitForm();
@@ -104,9 +106,9 @@ function renderForm(){
     // This creates an innerHTML for the form to be set which would be inside the createMonster div.
     createMonster.innerHTML = 
     // This form class assigns a class for the form that we're creating.
-    `<form class="add-monster-form">
-        <h1>Create new monster</h1>
-        
+    `
+    <h1>Create new monster</h1>
+        <form class="add-monster-form">
         <input type="text" name="name" value="" placeholder="Enter a monsters name" class="input-text"/>
         <br/>
         <input type="number" name="age" value="" placeholder="Enter a monsters Age" class="input-text"/>
@@ -140,7 +142,7 @@ function submitForm(){
         newMonster = {name, age, description}
     
     // This fetches the data URL and assigns it's limit.
-    fetch(`${dataURL}/?_limit=10`, {
+    fetch(url(page), {
         /* Fetch is normally assigned to a GET request so in order to post the data we have to overwrite the method to 
         POST. */
         /* What's also needed is the headers and the body, and within the body, the JSON that was fetched will be 
@@ -156,8 +158,8 @@ function submitForm(){
     /* After we get our response we render the new monsters inside of the function, renderMonsters, which will then be
     displayed onto the page. */
     .then(newMonster => renderMonsters(newMonster))
+
+    // resets the form so the user's previous inputs are not still on the page.
+    form.reset();
     })
 }
-
-
-
