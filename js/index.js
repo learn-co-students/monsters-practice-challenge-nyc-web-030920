@@ -1,9 +1,53 @@
-const baseUrl = `http://localhost:3000/monsters/?_limit=50`
+document.addEventListener('DOMContentLoaded', () => {
+    //render first 50 monsters 
+    getMonsters(page)
+    
+    createForm()
+    const form = document.querySelector('.create-monster-form')
 
+    //pagination
+    document.addEventListener('click', event => {
+        if (event.target.id === 'forward') {
+          if (containerDiv.childElementCount < 50) {
+            alert('on the last page')
+          } else {
+            containerDiv.innerHTML = ''
+            getMonsters(++page)
+          }
+        } else if (event.target.id === 'back')  {
+          if (page === 1) {
+            alert('can\'t go back from page 1')
+          } else {
+            containerDiv.innerHTML = ''
+            getMonsters(--page)
+          }
+        } 
+    })
 
-function url(page) {
-  return `http://localhost:3000/monsters/?_limit=50&_page=${page}`
-}
+    //toggle form view
+    toggleFormBtn.addEventListener("click", function(event) {
+      toggleForm()
+    })
+
+    //post new monster
+    form.addEventListener('submit', event => {
+      event.preventDefault()
+
+      const newMonster = {
+            name: form.name.value, 
+            age: form.age.value, 
+            description: form.description.value 
+          }
+
+      postMonster(newMonster);
+
+      form.reset()
+
+      toggleForm()
+    })
+})
+
+const baseUrl = "http://localhost:3000/monsters"
 
 //div that contains the form
 const formDiv = document.getElementById(`create-monster`)
@@ -21,7 +65,7 @@ const headers = {
 
 //button for showing form
 const toggleFormBtn = document.createElement('button')
-toggleFormBtn.textContent = 'Make a New Monster'
+toggleFormBtn.textContent = 'Add a New Monster'
 
 //inserting button before the form div
 document.body.insertBefore(toggleFormBtn, formDiv)
@@ -29,54 +73,15 @@ document.body.insertBefore(toggleFormBtn, formDiv)
 //state variable to toggle form view
 let viewForm = false
 
-//variable for rendering first 50 monsters on page 1
+//used in pagination
 let page = 1
 
-document.addEventListener('DOMContentLoaded', () => {
-    //render first 50 monsters 
-    getMonsters(page)
-    
-    renderMonsterForm()
-    const form = document.querySelector('.create-monster-form')
 
-    //pagination
-    document.addEventListener('click', event => {
-      if (event.target.id === 'forward') {
-        if (containerDiv.childElementCount < 50) {
-          alert('on the last page')
-        } else {
-          containerDiv.innerHTML = ''
-          getMonsters(++page)
-        }
-      } else if (event.target.id === 'back')  {
-        if (page > 1) {
-          containerDiv.innerHTML = ''
-          getMonsters(--page)
-        } else {
-          alert('can\'t go back from page 1')
-        }
-      } 
-    })
+function url(page) {
+  return `http://localhost:3000/monsters/?_limit=50&_page=${page}`
+}
 
-    toggleFormBtn.addEventListener("click", function(event) {
-      toggleForm()
-    })
-
-    //post new monster
-    form.addEventListener('submit', event => {
-      event.preventDefault()
-      const newMonster = {
-            name: form.name.value, 
-            age: form.age.value, 
-            description: form.description.value 
-          }
-      postMonster(newMonster);
-      form.reset() 
-    })
-})
-
-
-//functon to toggle form view
+//function to toggle form view
 //changes div containing the form display.style
 function toggleForm() {
   viewForm = !viewForm
@@ -88,7 +93,31 @@ function toggleForm() {
   }
 }
 
+function getMonsters(page) {
+  fetch(url(page))
+  .then(resp => resp.json())
+  .then(monsters => {
+    monsters.forEach(monsterObj => {
+    renderMonster(monsterObj)
+    });
+  })
+}
+
+function renderMonster(monsterObj) {
+  let innerDiv = document.createElement('div')
+  innerDiv.dataset.id = monsterObj.id
+
+  innerDiv.innerHTML = `
+    <h1>${monsterObj.name}</h1>
+    <p><b>Age: </b>${monsterObj.age}</p>
+    <p><b>Description: </b>${monsterObj.description}</p>
+    <hr>
+  `
+  containerDiv.append(innerDiv)
+}
+
 //function to post monster object to database
+//renders pessimisticaly
 function postMonster(newMonster) {
   fetch(baseUrl, {
     //const headers declared globally
@@ -101,32 +130,11 @@ function postMonster(newMonster) {
     renderMonster(monster)
   })
 }
-      
-function getMonsters(page) {
-  fetch(url(page))
-  .then(resp => resp.json())
-  .then(monsters => {
-    monsters.forEach(monsterObj => {
-      renderMonster(monsterObj)
-    });
-  })
-}
 
-function renderMonster(monsterObj) {
-  let innerDiv = document.createElement('div')
-  innerDiv.dataset.id = monsterObj.id
 
-  innerDiv.innerHTML = `
-    <h1>${monsterObj.name}</h1>
-    <p>${monsterObj.age}</p>
-    <p>${monsterObj.description}</p>
-  `
-  containerDiv.append(innerDiv)
-}
-
-function renderMonsterForm(){
+function createForm(){
   formDiv.innerHTML = `
-  <h1>Create new monster</h1>
+  <h1>Create New Monster</h1>
   <form class = "create-monster-form">
     <p>
       Monster Name: <br>
@@ -143,7 +151,7 @@ function renderMonsterForm(){
       <input type="text" name="description" value=""   placeholder="Monster Description" class="input-text"/>
     </p>
     
-    <input type="submit" name="submit" value="Create new Monster" class="submit"/>
+    <input type="submit" name="submit" value="Create Monster" class="submit"/>
   </form>
   `
 }

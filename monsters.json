@@ -6005,6 +6005,24 @@
       "age": "45",
       "description": "Likes to hug a lot",
       "id": 1001
+    },
+    {
+      "name": "Chuckles",
+      "age": "78",
+      "description": "Mysteriously chuckles at random",
+      "id": 1002
+    },
+    {
+      "name": "Loch Ness",
+      "age": "1000",
+      "description": "First spotted in Loch Ness Lake",
+      "id": 1003
+    },
+    {
+      "name": "IT",
+      "age": "3000",
+      "description": "Feeds on fearful children",
+      "id": 1004
     }
   ]
 }
